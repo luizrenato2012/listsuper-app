@@ -3,14 +3,18 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BarraNavegacaoComponent } from './core/barra-navegacao/barra-navegacao.component';
+import { ProdutosModule } from './produtos/produtos.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BarraNavegacaoComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ProdutosModule
   ],
   providers: [],
   bootstrap: [AppComponent]
