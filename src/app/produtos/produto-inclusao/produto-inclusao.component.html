@@ -1,1 +1,39 @@
-<p>produto-inclusao works!</p>
+<p-panel header="Cadastro de Produtos">
+    <div id="argumento">
+        <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-shopping-cart"></i></span>   
+            <input type="text" pInputText placeholder="Digite a Descrição"> 
+            <!-- <span class="ui-inputgroup-addon" style="margin-left: 20px; margin-right: 20px"> -->
+                
+            <!-- </span>   -->
+        </div>
+        <div style="margin-top: 8px;">
+            <button pButton type="button" label="Grava" class="ui-button-success" icon="pi pi-save" style="margin-right: 8px;"></button>    
+            <button pButton type="button" label="Pesquisa" icon="pi pi-search" style="margin-right: 8px;"></button>
+        </div>
+    </div>
+
+    <div id="dados" style="margin-top: 8px;">
+            <p-table [value]="produtos">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 20%;">No</th>
+                        <th style="width: 80%;">Descrição</th>
+                        <th style="width: 20%;">X</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-produto >
+                    <tr>
+                        <td style="text-align: center;">{{produto.id}}</td>
+                        <td>{{produto.descricao}}</td>
+                        <td style="text-align: center;">
+                            <span class="ui-inputgroup-addon">
+                                      <button pButton class="ui-button-danger" icon="pi pi-trash" (click)="exclui()"> </button>
+                            </span> 
+                        </td>
+                    </tr>
+
+                </ng-template>
+            </p-table>
+    </div>
+</p-panel>

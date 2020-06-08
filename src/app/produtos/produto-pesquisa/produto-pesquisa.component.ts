@@ -9,7 +9,10 @@ export class ProdutoPesquisaComponent implements OnInit {
 
   constructor() { }
 
+
+
   ngOnInit() {
+    
   }
 
 }

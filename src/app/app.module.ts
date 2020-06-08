@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BarraNavegacaoComponent } from './core/barra-navegacao/barra-navegacao.component';
 import { ProdutosModule } from './produtos/produtos.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { ProdutosModule } from './produtos/produtos.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ProdutosModule
+    ProdutosModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
