@@ -1,28 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProdutosModule } from './produtos/produtos.module';
-import { ProdutoInclusaoComponent } from './produtos/produto-inclusao/produto-inclusao.component';
-import { ProdutoPesquisaComponent } from './produtos/produto-pesquisa/produto-pesquisa.component';
-import { ProdutoDownloadComponent } from './produtos/produto-download/produto-download.component';
 
 
 const routes: Routes = [
   {
-    path: 'produtos/novo',
-    component: ProdutoInclusaoComponent
+    path: 'listas',
+    loadChildren: './listas-compra/listas-compra.module#ListasCompraModule'
   },
   {
-    path: 'produtos/pesquisa',
-    component: ProdutoPesquisaComponent
+    path: 'produtos',
+    loadChildren: './produtos/produtos.module#ProdutosModule'
   },
   {
-    path: 'produtos/download',
-    component: ProdutoDownloadComponent
-  },
-  { 
-    path: '', redirectTo: 'produtos/novo', 
+    path: '', redirectTo: '/', 
     pathMatch: 'full'
-  },
+  }
+  
 ];
 
 @NgModule({

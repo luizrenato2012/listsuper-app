@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { ProdutoDownloadComponent } from './produto-download/produto-download.component';
 import { ProdutoInclusaoComponent } from './produto-inclusao/produto-inclusao.component';
 import { ProdutoPesquisaComponent } from './produto-pesquisa/produto-pesquisa.component';
-
-import { PanelModule } from 'primeng/panel';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ProdutosRoutingModule } from './produtos-routing.modules';
 
 @NgModule({
     declarations :[
@@ -20,10 +19,10 @@ import { FormsModule } from '@angular/forms';
         ProdutoPesquisaComponent
     ],
     imports: [
-        PanelModule,
-        ButtonModule,
-        TableModule,
-        FormsModule
+        FormsModule,
+        CommonModule,
+        ReactiveFormsModule,
+        ProdutosRoutingModule
     ]
 })
 export class ProdutosModule {

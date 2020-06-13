@@ -1,1 +1,27 @@
-<p>barra-navegacao works!</p>
+<div id="barra">
+  <div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" 
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: blue;">
+      Lista de Supermercado
+    </a>
+  
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" routerLink="/listas/menu">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        Listas
+      </a>
+      <a class="dropdown-item" routerLink="/produtos/novo">
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        Produtos
+      </a>
+      <a class="dropdown-item" routerLink="/" >
+        <i class="fa fa-cogs" aria-hidden="true"></i>
+        Configurações
+      </a>
+      <a class="dropdown-item" routerLink="/" >
+        <i class="fa fa-home" aria-hidden="true"></i>
+        Home
+      </a>
+    </div>
+  </div>
+</div>

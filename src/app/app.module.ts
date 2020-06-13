@@ -3,20 +3,18 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BarraNavegacaoComponent } from './core/barra-navegacao/barra-navegacao.component';
-import { ProdutosModule } from './produtos/produtos.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from './core/core.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BarraNavegacaoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ProdutosModule,
+    CoreModule,
     BrowserAnimationsModule
   ],
   providers: [],
