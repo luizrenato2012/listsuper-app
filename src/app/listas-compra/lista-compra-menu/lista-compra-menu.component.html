@@ -5,21 +5,16 @@
     
     <div class="card-body">
         <div class="botao">
-            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-item">
-                    Nova
-                </div>
-            </div> -->
-            <select class="custom-select" id="inputGroupSelect01">
-                <option selected>Escolha...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
+            <select class="custom-select" [(ngModel)]="strIdSelecionado">
+                <!-- <option selected [value]="-1">Escolha...</option> -->
+                <option *ngFor="let lista of listas" [value]="lista.id" >
+                    {{lista.nome}}
+                </option>
+            </select>
         </div>
 
         <div class="botao">
-            <button  class="btn btn-primary" style="width: 100%; margin-right: 8px;">Seleciona</button>
+            <button  class="btn btn-primary" (click)="seleciona()" style="width: 100%; margin-right: 8px;">Seleciona</button>
         </div>
         <div class="botao">
             <button class="btn btn-primary" icon="pi pi-trash" style="width: 100%; margin-right: 8px;">Exclui</button>

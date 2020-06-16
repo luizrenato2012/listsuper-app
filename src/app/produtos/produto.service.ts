@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Produto } from './produto';
+import { ProdutoInclusaoComponent } from './produto-inclusao/produto-inclusao.component';
 
 @Injectable({
   providedIn: 'root'
@@ -14,56 +15,36 @@ export class ProdutoService {
 
   init() {
     this.produtos = [
-      {
-        id: 1,
-        descricao: 'Arroz',
-        selecionado: false
-      },
-      {
-        id: 2,
-        descricao: 'Feijao',
-        selecionado: false
-      },
-      {
-        id: 3,
-        descricao: 'Macarrão',
-        selecionado: false
-      },
-      {
-        id: 4,
-        descricao: 'Oléo',
-        selecionado: false
-      },
-      {
-        id: 5,
-        descricao: 'Milho',
-        selecionado: false
-      },
-      {
-        id: 6,
-        descricao: 'Cebola',
-        selecionado: false
-      }
+      new Produto( 1,'Arroz'),
+      new Produto(  2,'Feijao'),
+      new Produto( 3, 'Macarrão'),
+      new Produto( 4,'Oléo'),
+      new Produto( 5, 'Milho'),
+      new Produto( 6,'Cebola')
     ];
   }
 
   getProdutos() {
-    return this.produtos;
+    return this.copyProdutos(this.produtos);
   }
 
   pesquisa(argumento: string) {
     argumento = this.capitalize(argumento);
-    return this.produtos.filter(
-      produto => produto.descricao.includes(argumento));
+    const produtosFiltro= this.produtos.filter(produto => produto.descricao.includes(argumento));
+    return this.copyProdutos(produtosFiltro);  
+  }
+
+  private copyProdutos(produtos : Produto[]) {
+    let strProduto = '';
+    return produtos.map(produto => {
+      strProduto = JSON.stringify(produto);
+      return JSON.parse(strProduto);
+    });
   }
 
   adiciona(descricao: string) {
-    let index = this.produtos.length;
-    this.produtos.push({
-      id: ++index,
-      descricao : this.capitalize(descricao),
-      selecionado : false
-    });
+    let index = ++this.produtos.length;
+    this.produtos.push(new Produto(index,this.capitalize(descricao)));
   }
 
   exclui(id : number) {

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ListaCompra } from '../lista-compra';
+import { ListaCompraService } from '../lista-compra.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista-menu',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaCompraMenuComponent implements OnInit {
 
-  constructor() { }
+  listas : ListaCompra[];
+  strIdSelecionado: string;
+
+  constructor(private service: ListaCompraService, 
+              private router: Router) { }
 
   ngOnInit() {
+    this.listas = this.service.getListas();
+  }
+
+  seleciona () {
+    console.log(`item selecionado ${this.strIdSelecionado}` );
+    this.service.setListaEdicao(this.strIdSelecionado!=="null" ? parseInt(this.strIdSelecionado) : null);
+    this.router.navigateByUrl('/listas/nova');
   }
 
 }

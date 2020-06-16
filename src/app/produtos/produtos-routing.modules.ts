@@ -16,6 +16,10 @@ const routes : Routes = [
       {
         path: 'download',
         component: ProdutoDownloadComponent
+      },
+      {
+        path: 'escolhe',
+        component: ProdutoInclusaoComponent
       }
 ]
 @NgModule({

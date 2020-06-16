@@ -4,4 +4,10 @@ export class Produto {
     descricao: string;
     selecionado: boolean;
 
+    constructor(id: number, descricao: string) {
+        this.id = id;
+        this.descricao = descricao;
+        this.selecionado = false;
+    }
+
 }

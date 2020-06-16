@@ -19,8 +19,7 @@
                         Pesquisa
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
-                    <button  type="button" (click)="volta()" class="btn btn-warning" 
-                       disabled="true" style="margin-right: 5px;">
+                    <button  type="button" (click)="volta()" class="btn btn-warning" style="margin-right: 5px;">
                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
                        Volta
                     </button>
@@ -40,6 +39,7 @@
                   <tr style="height: 30%;">
                     <th class="header1">No</th>
                     <th class="header2">Descrição</th>
+                    <th *ngIf="isOrigemLista" class="header2">Marcar</th>
                     <th class="header2">X</th>
                   </tr>
                 </thead>
@@ -47,6 +47,12 @@
                   <tr *ngFor="let produto of produtos">
                     <td>{{produto.id}}</td>
                     <td>{{produto.descricao}}</td>
+                    <td *ngIf="isOrigemLista">
+                        <input type="checkbox" 
+                            [checked]="produto.selecionado" 
+                            (change)="produto.selecionado= !produto.selecionado">
+                        <!-- {{produto.selecionado}} -->
+                    </td>
                     <td>
                         <button  class="btn btn-danger" (click)="exclui(produto.id)" >
                             <i class="fa fa-trash" aria-hidden="true"></i>
@@ -58,5 +64,5 @@
         </div>
     
     </div>
-      
+
 </div>

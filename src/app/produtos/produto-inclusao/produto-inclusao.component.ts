@@ -4,6 +4,8 @@ import { distinctUntilChanged } from 'rxjs/operators';
 
 import { Produto } from '../produto';
 import { ProdutoService } from '../produto.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ListaCompraService } from 'src/app/listas-compra/lista-compra.service';
 
 @Component({
   selector: 'app-produto-inclusao',
@@ -19,13 +21,24 @@ export class ProdutoInclusaoComponent implements OnInit {
   btnSave: ElementRef<HTMLButtonElement>;
 
   mensagem : string = "";
-  
-  constructor(private service: ProdutoService, private builder: FormBuilder) { }
+
+  isOrigemLista = false;
+
+  constructor(private produtoService: ProdutoService, 
+              private listaService : ListaCompraService,
+              private builder: FormBuilder,
+              private router : Router) { }
 
   ngOnInit() {
+   this.initForm();
+   console.log(`URL ${this.router.url}`);
+   this.isOrigemLista = this.router.url.endsWith('escolhe') ? true : false
+  //  console.log(`Origem lista ${this.origemLista}`);
+  }
+
+  private initForm() {
     this.btnSave.nativeElement.disabled = true;
     
-    // console.log(`Produtos: ${this.produtos}`);
     this.formProduto = this.builder.group({
       'descricao' : ['']
     });
@@ -62,7 +75,7 @@ export class ProdutoInclusaoComponent implements OnInit {
     this.ocultaMensagem();
     if (confirm('Confirma a exclusao do produto?')) {
       console.log(`Excluindo  ${id}`);
-      this.service.exclui(id);
+      this.produtoService.exclui(id);
       this.pesquisa(this.formProduto.get('descricao') as FormControl);
       this.imprimeMensagem("Produto Excluído com Sucesso!");
     }
@@ -72,7 +85,7 @@ export class ProdutoInclusaoComponent implements OnInit {
     if (descricao.value==null) {
       return;
     }
-    this.service.adiciona(descricao.value);
+    this.produtoService.adiciona(descricao.value);
     descricao.reset();
     this.imprimeMensagem("Produto gravado com sucesso");
   }
@@ -80,9 +93,9 @@ export class ProdutoInclusaoComponent implements OnInit {
   pesquisa(argumento?: FormControl) {
     let descricao = argumento.value;
     if (!descricao) {
-      this.produtos = this.service.getProdutos();
+      this.produtos = this.produtoService.getProdutos();
     } else {
-      this.produtos = this.service.pesquisa(descricao);
+      this.produtos = this.produtoService.pesquisa(descricao);
     }
   }
 
@@ -100,7 +113,17 @@ export class ProdutoInclusaoComponent implements OnInit {
   }
 
   volta() {
-    console.log('Voltando');
+    if (this.isOrigemLista ) {
+      this.listaService.adicionaItens(this.getProdutosSelecionados());
+      this.router.navigate(['listas','nova']);
+      return;
+    }
+
+    this.router.navigate( ['']);
+  }
+
+  private getProdutosSelecionados() {
+    return this.produtos.filter(produto => produto.selecionado);
   }
 
 }

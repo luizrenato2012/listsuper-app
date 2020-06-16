@@ -1,0 +1,97 @@
+<div class="card">
+    <div class="card-header primary">
+        Montagem da Lista de Compra
+    </div>
+
+    <div class="card-body">
+        <span style="font-weight: bold;">{{listaEdicao.nome}}</span> <br>
+        <span style="margin-bottom:3px;">Selecione os produtos da lista</span>
+
+        <div id="botoes">
+            <button  type="submit"  (click)="escolhe()" class="btn btn-primary" style="margin-right: 5px;">
+                Escolhe
+                <i class="fa fa-hand-o-down" aria-hidden="true"></i>
+            </button>  
+           
+            <button  type="button" (click)="grava()" class="btn btn-success" style="margin-right: 5px;">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Grava
+            </button>
+
+            <button type="button"  class="btn btn-warning" (click)="volta()" style="margin-right: 5px;">
+                Volta
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>  
+        </div>
+
+        <div style="margin-top: 5px">
+            <div class="alert alert-primary" role="alert" *ngIf="exibeMensagem()">
+                {{mensagem}}
+            </div>
+        </div>
+
+        <div id="dados" >
+            <table class="table" style="margin-top: 5x;">
+                <thead>
+                  <tr>
+                    <th class="header1">No</th>
+                    <th class="header1">
+                        <span>
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </span>
+                    </th>
+                    <th class="header2">Descrição</th>
+                    <th class="header2"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></th>
+                    <th class="header2"><i class="fa fa-trash-o" aria-hidden="true"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listaEdicao.itens">
+                    <td>{{item.id}}</td>
+                    <td>
+                        <input type="checkbox" 
+                        [checked]="item.noCarrinho" 
+                        (change)="item.noCarrinho= !item.noCarrinho">
+                    </td>
+                    <td>{{item.descricao}} {{item.marca}} {{item.quantidade}}</td>
+                    <td>
+                        <button  class="btn btn-info" (click)="altera(item)" >
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button  class="btn btn-danger" (click)="exclui(item.id)" >
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+
+    </div>
+
+    <div class="modal" tabindex="-1" id="mdl_item" role="dialog">
+        <form #cadastro="ngForm">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Dados do Item</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="text" name="marca" placeholder="Marca" [(ngModel)]="itemEdicao.marca"> <br>
+              <input type="text" name="quantidade" placeholder="Quant."  [(ngModel)]="itemEdicao.quantidade"> <br>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="fecha()">Grava</button>
+              <button type="button" class="btn btn-secondary" (click)="fecha()">Fecha</button>
+            </div>
+          </div>
+        </div>
+    </form>
+      </div>
+
+</div>
