@@ -36,23 +36,32 @@
         <div id="dados" style="margin-top: 5x;">
             <table class="table">
                 <thead>
-                  <tr style="height: 30%;">
-                    <th class="header1">No</th>
-                    <th class="header2">Descrição</th>
-                    <th *ngIf="isOrigemLista" class="header2">Marcar</th>
-                    <th class="header2">X</th>
+                  <tr>
+                    <th style="width: 45%;">No</th>
+                    <th class="col-sm-10">Descrição</th>
+                    <th class="col-sm-1"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let produto of produtos">
-                    <td>{{produto.id}}</td>
+                    <td>
+                        <div class="row">
+                            <div class="div_id" >
+                                {{produto.id}}
+                            </div>
+                            <div *ngIf="isOrigemLista">
+                                <input type="checkbox" 
+                                [checked]="produto.selecionado" 
+                                (change)="produto.selecionado= !produto.selecionado">
+                            </div>
+                        </div>
+                    </td>
                     <td>{{produto.descricao}}</td>
-                    <td *ngIf="isOrigemLista">
+                    <!-- <td *ngIf="isOrigemLista">
                         <input type="checkbox" 
                             [checked]="produto.selecionado" 
                             (change)="produto.selecionado= !produto.selecionado">
-                        <!-- {{produto.selecionado}} -->
-                    </td>
+                    </td> -->
                     <td>
                         <button  class="btn btn-danger" (click)="exclui(produto.id)" >
                             <i class="fa fa-trash" aria-hidden="true"></i>
