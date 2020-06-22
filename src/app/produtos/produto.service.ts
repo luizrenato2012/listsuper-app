@@ -26,7 +26,8 @@ export class ProdutoService {
   }
 
   getProdutos() : Observable<Produto[]> {
-    return of (this.copyProdutos(this.produtos));
+    let temp = this.copyProdutos(this.produtos);
+    return of (temp.filter(item => item !=null));
     // return this.copyProdutos(this.produtos);
   }
 

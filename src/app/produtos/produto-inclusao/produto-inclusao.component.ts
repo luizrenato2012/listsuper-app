@@ -1,12 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { distinctUntilChanged, filter, tap, map, toArray } from 'rxjs/operators';
+import { distinctUntilChanged, filter, tap, map, toArray, defaultIfEmpty, mergeAll } from 'rxjs/operators';
 
 import { Produto } from '../produto';
 import { ProdutoService } from '../produto.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListaCompraService } from 'src/app/listas-compra/lista-compra.service';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, concat } from 'rxjs';
 
 @Component({
   selector: 'app-produto-inclusao',
@@ -14,7 +14,7 @@ import { Observable, from, of } from 'rxjs';
   styleUrls: ['./produto-inclusao.component.css']
 })
 export class ProdutoInclusaoComponent implements OnInit {
-  produtos$ : Observable<Produto[]>;
+  produtos : Produto[] = [];
 
   formProduto: FormGroup;
   
@@ -32,9 +32,7 @@ export class ProdutoInclusaoComponent implements OnInit {
 
   ngOnInit() {
    this.initForm();
-   console.log(`URL ${this.router.url}`);
    this.isOrigemLista = this.router.url.endsWith('escolhe') ? true : false
-  //  console.log(`Origem lista ${this.origemLista}`);
   }
 
   private initForm() {
@@ -45,7 +43,6 @@ export class ProdutoInclusaoComponent implements OnInit {
     });
     
     let edtDescricao = this.formProduto.get('descricao');
-    console.log(`Valor inicial: ${edtDescricao.value}`);
     edtDescricao.valueChanges
       .pipe(
         distinctUntilChanged( (prev, cur)=>{
@@ -78,30 +75,36 @@ export class ProdutoInclusaoComponent implements OnInit {
     }
   }
 
-  grava(descricao: FormControl) {
-    if (descricao.value==null) {
+  grava(descricaoControl: FormControl) {
+    let descricao = descricaoControl.value;
+    if (descricao==null) {
+      console.error("Erro ao incluir produto - descricao invalida");
       return;
     }
-    this.produtoService.adiciona(descricao.value);
-    descricao.reset();
+    this.produtoService.adiciona(descricao);
+    descricaoControl.reset();
     this.imprimeMensagem("Produto gravado com sucesso");
   }
 
   pesquisa(argumento?: FormControl) {
+    
     let descricao = argumento.value;
+    let observableTemp$ : Observable<Produto[]>;
+    let selecionados = this.getProdutosSelecionados();
+
     if (!descricao) {
-      this.produtos$ = this.produtoService.getProdutos();
-      this.produtos$.subscribe( valor => {
-        console.log(`Resultado pesquisa`);
-        console.log(`${JSON.stringify(valor)}`);
-      });
+      observableTemp$ = this.produtoService.getProdutos();
     } else {
-      this.produtos$ = this.produtoService.pesquisa(descricao);
+      observableTemp$ = this.produtoService.pesquisa(descricao);
     }
+
+    observableTemp$.subscribe(retorno => {
+      this.produtos = this.isOrigemLista ? selecionados.concat(retorno) : retorno;  
+    });
+
   }
 
   imprimeMensagem(msg: string) {
-    console.log(`Mensagem ${msg}`);
     this.mensagem = msg;
   }
 
@@ -113,23 +116,18 @@ export class ProdutoInclusaoComponent implements OnInit {
     this.mensagem = '';
   }
 
-   volta() {
-      this.getProdutosSelecionados().subscribe( produtos => {
-        console.log(`Produtos selecionados ${JSON.stringify(produtos)}`);
-        if (this.isOrigemLista) {
-          this.listaService.adicionaItens(produtos);
-          this.router.navigate(['listas','nova']);
-          return;
-        }
-        this.router.navigate( ['']);
-      });
-
+  volta() {
+    if (this.isOrigemLista) {
+        let selecionados = this.getProdutosSelecionados();
+        this.listaService.adicionaItens(selecionados);
+        this.router.navigate(['listas','nova']);
+        return;
+    }
+    this.router.navigate( ['']);
   }
 
   private getProdutosSelecionados() {
-    return this.produtos$.pipe(
-      map ( produtos => produtos.filter(produto => produto.selecionado))
-    )
+      return this.produtos.filter(produto => produto.selecionado);
   }
 
   private criaTeste() : Observable<any[]> {

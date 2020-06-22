@@ -64,4 +64,5 @@ export class ListaCompraService {
   private getNextId() {
     return this.listas.length++;
   }
+
 }

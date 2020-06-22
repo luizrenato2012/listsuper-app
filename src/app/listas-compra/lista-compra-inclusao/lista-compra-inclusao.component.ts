@@ -58,5 +58,9 @@ export class ListaCompraInclusaoComponent implements OnInit {
     $('#mdl_item').fadeOut();
   }
 
+  exclui(id: number) {
+    this.listaEdicao.itens = this.listaEdicao.itens.filter( item => item.id !== id);
+  }
+
 
 }
