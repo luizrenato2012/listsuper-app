@@ -1,11 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, filter, tap, map, toArray } from 'rxjs/operators';
 
 import { Produto } from '../produto';
 import { ProdutoService } from '../produto.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListaCompraService } from 'src/app/listas-compra/lista-compra.service';
+import { Observable, from, of } from 'rxjs';
 
 @Component({
   selector: 'app-produto-inclusao',
@@ -13,7 +14,7 @@ import { ListaCompraService } from 'src/app/listas-compra/lista-compra.service';
   styleUrls: ['./produto-inclusao.component.css']
 })
 export class ProdutoInclusaoComponent implements OnInit {
-  produtos : Produto[];
+  produtos$ : Observable<Produto[]>;
 
   formProduto: FormGroup;
   
@@ -67,10 +68,6 @@ export class ProdutoInclusaoComponent implements OnInit {
     return !(l1 === 0 && l2 === 1) && !(l1 == 1 && l2 == 0) ;
   }
 
-  isSelecionado() {
-    return this.produtos.find( produto => produto.selecionado);
-  }
-
   exclui(id: number) {
     this.ocultaMensagem();
     if (confirm('Confirma a exclusao do produto?')) {
@@ -93,9 +90,13 @@ export class ProdutoInclusaoComponent implements OnInit {
   pesquisa(argumento?: FormControl) {
     let descricao = argumento.value;
     if (!descricao) {
-      this.produtos = this.produtoService.getProdutos();
+      this.produtos$ = this.produtoService.getProdutos();
+      this.produtos$.subscribe( valor => {
+        console.log(`Resultado pesquisa`);
+        console.log(`${JSON.stringify(valor)}`);
+      });
     } else {
-      this.produtos = this.produtoService.pesquisa(descricao);
+      this.produtos$ = this.produtoService.pesquisa(descricao);
     }
   }
 
@@ -112,18 +113,44 @@ export class ProdutoInclusaoComponent implements OnInit {
     this.mensagem = '';
   }
 
-  volta() {
-    if (this.isOrigemLista ) {
-      this.listaService.adicionaItens(this.getProdutosSelecionados());
-      this.router.navigate(['listas','nova']);
-      return;
-    }
+   volta() {
+      this.getProdutosSelecionados().subscribe( produtos => {
+        console.log(`Produtos selecionados ${JSON.stringify(produtos)}`);
+        if (this.isOrigemLista) {
+          this.listaService.adicionaItens(produtos);
+          this.router.navigate(['listas','nova']);
+          return;
+        }
+        this.router.navigate( ['']);
+      });
 
-    this.router.navigate( ['']);
   }
 
   private getProdutosSelecionados() {
-    return this.produtos.filter(produto => produto.selecionado);
+    return this.produtos$.pipe(
+      map ( produtos => produtos.filter(produto => produto.selecionado))
+    )
   }
+
+  private criaTeste() : Observable<any[]> {
+    let obs$ : Observable<any[]> = of ([
+      {id: 1 , nome: 'Teste 1', marcado : false},
+      {id: 2 , nome: 'Teste 2', marcado : true},
+      {id: 3 , nome: 'Teste 3', marcado : true},
+      {id: 4 , nome: 'Teste 4', marcado : true}
+    ]);
+   //  return obs$;
+    return obs$.pipe(
+      map(obs => obs.filter(obj => obj.marcado==true))
+    );
+  }
+
+    executaTeste() {
+      console.log('Executando teste');
+      let itens = this.criaTeste();
+      itens.subscribe( item => {
+        console.log( item);
+      });
+    }
 
 }

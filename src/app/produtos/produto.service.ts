@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Produto } from './produto';
 import { ProdutoInclusaoComponent } from './produto-inclusao/produto-inclusao.component';
+import { of, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +16,25 @@ export class ProdutoService {
 
   init() {
     this.produtos = [
-      new Produto( 1,'Arroz'),
-      new Produto(  2,'Feijao'),
+      new Produto( 1, 'Arroz'),
+      new Produto( 2, 'Feijao'),
       new Produto( 3, 'Macarrão'),
-      new Produto( 4,'Oléo'),
+      new Produto( 4, 'Oléo'),
       new Produto( 5, 'Milho'),
-      new Produto( 6,'Cebola')
+      new Produto( 6, 'Cebola')
     ];
   }
 
-  getProdutos() {
-    return this.copyProdutos(this.produtos);
+  getProdutos() : Observable<Produto[]> {
+    return of (this.copyProdutos(this.produtos));
+    // return this.copyProdutos(this.produtos);
   }
 
-  pesquisa(argumento: string) {
+  pesquisa(argumento: string) : Observable<Produto[]> {
     argumento = this.capitalize(argumento);
-    const produtosFiltro= this.produtos.filter(produto => produto.descricao.includes(argumento));
-    return this.copyProdutos(produtosFiltro);  
+    const produtosFiltro= this.produtos.filter(
+      produto => produto.descricao.includes(argumento));
+    return of (this.copyProdutos(produtosFiltro));  
   }
 
   private copyProdutos(produtos : Produto[]) {

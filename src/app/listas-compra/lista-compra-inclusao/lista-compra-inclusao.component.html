@@ -41,13 +41,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of listaEdicao.itens">
+                  <tr *ngFor="let item of listaEdicao.itens" 
+                    [ngClass]="{'table-primary' : item.noCarrinho}">
 
                     <td>
                       <div>
                         <input type="checkbox" 
                           [checked]="item.noCarrinho" 
-                          (change)="item.noCarrinho= !item.noCarrinho" style="margin-left: 0px;">
+                          (change)="item.noCarrinho = !item.noCarrinho"
+                          style="margin-left: 0px;">
                         {{item.id}}
                       </div>
                     </td>

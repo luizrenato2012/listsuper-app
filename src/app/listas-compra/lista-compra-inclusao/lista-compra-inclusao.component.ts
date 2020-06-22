@@ -16,10 +16,15 @@ export class ListaCompraInclusaoComponent implements OnInit {
   mensagem : string = "";
   itemEdicao = new ItemCompra();
 
+  classeSelecao="table-danger";
+
   constructor(private service: ListaCompraService, 
-              private router: Router) { }
+              private router: Router) { 
+                console.log('Criando lista-compra-inclusao');
+              }
 
   ngOnInit() {
+    console.log('Iniciando lista-compra-inclusao');
     this.listaEdicao = this.service.getListaEdicao() || new ListaCompra();
   }
 
@@ -37,7 +42,6 @@ export class ListaCompraInclusaoComponent implements OnInit {
   }
 
   imprimeMensagem(msg: string) {
-    console.log(`Mensagem ${msg}`);
     this.mensagem = msg;
   }
 
@@ -46,7 +50,6 @@ export class ListaCompraInclusaoComponent implements OnInit {
   }
 
   altera(item: ItemCompra) {
-    // alert(`Alterando ${JSON.stringify(item)}`);
     this.itemEdicao = item;
     $('#mdl_item').show("slow");
   }
@@ -54,5 +57,6 @@ export class ListaCompraInclusaoComponent implements OnInit {
   fecha() {
     $('#mdl_item').fadeOut();
   }
+
 
 }
