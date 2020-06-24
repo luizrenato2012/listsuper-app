@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ListaCompraService } from 'src/app/listas-compra/lista-compra.service';
 import { Observable, from, of, concat } from 'rxjs';
 
+const TAMANHO_DESCRICAO=3;
 @Component({
   selector: 'app-produto-inclusao',
   templateUrl: './produto-inclusao.component.html',
@@ -15,6 +16,7 @@ import { Observable, from, of, concat } from 'rxjs';
 })
 export class ProdutoInclusaoComponent implements OnInit {
   produtos : Produto[] = [];
+  produtosPesquisa : Produto[] = [];
 
   formProduto: FormGroup;
   
@@ -22,6 +24,8 @@ export class ProdutoInclusaoComponent implements OnInit {
   btnSave: ElementRef<HTMLButtonElement>;
 
   mensagem : string = "";
+  /** argumento de pesquisa do autocomplete  */
+  completeArg = "descricao";
 
   isOrigemLista = false;
 
@@ -50,7 +54,7 @@ export class ProdutoInclusaoComponent implements OnInit {
         }),
       ).subscribe(value=> {
         this.ocultaMensagem();
-        console.log(`Alterando ${value}`); 
+        //console.log(`Alterando ${value}`); 
           this.btnSave.nativeElement.disabled = !value ;
       });
   }
@@ -77,8 +81,8 @@ export class ProdutoInclusaoComponent implements OnInit {
 
   grava(descricaoControl: FormControl) {
     let descricao = descricaoControl.value;
-    if (descricao==null) {
-      console.error("Erro ao incluir produto - descricao invalida");
+    if (descricao==null || descricao.length < TAMANHO_DESCRICAO) {
+      this.imprimeMensagem("Erro ao incluir produto - descricao invalida");
       return;
     }
     this.produtoService.adiciona(descricao);
@@ -143,12 +147,25 @@ export class ProdutoInclusaoComponent implements OnInit {
     );
   }
 
-    executaTeste() {
-      console.log('Executando teste');
-      let itens = this.criaTeste();
-      itens.subscribe( item => {
-        console.log( item);
-      });
-    }
+  executaTeste() {
+    console.log('Executando teste');
+    let itens = this.criaTeste();
+    itens.subscribe( item => {
+      console.log( item);
+    });
+  }
+
+  buscaProdutos(item: string) {
+    console.log(`Buscando ${item}`);
+    this.produtoService.pesquisa( item)
+      .subscribe(produtos => this.produtosPesquisa = produtos);
+  }
+
+  autoCompleteSelecionado(valor) {
+    console.log(`Selecionado ${valor}`);
+    this.formProduto.get('descricao').setValue(valor.descricao);
+    this.produtos = this.getProdutosSelecionados();
+    this.produtos.push(valor);
+  }
 
 }

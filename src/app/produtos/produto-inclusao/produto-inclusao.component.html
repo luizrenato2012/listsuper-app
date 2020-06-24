@@ -6,10 +6,27 @@
     <div class="card-body">
         <form [formGroup]="formProduto" (ngSubmit)="grava(formProduto.get('descricao'))">
             <div id="argumento">
-                <div class="ui-inputgroup">
-                    <span class="ui-inputgroup-addon"><i class="pi pi-shopping-cart"></i></span>   
-                    <input type="text" formControlName="descricao" class="form-control" placeholder="Digite a Descrição"> 
+                <div class="ui-inputgroup" *ngIf="!isOrigemLista">
+                    <span class="ui-inputgroup-addon">
+                        <i class="pi pi-shopping-cart"></i>
+                    </span>   
+                    <input type="text" formControlName="descricao" class="form-control" placeholder="Digite a Descrição">
                 </div>
+                <div id="auto-complete" *ngIf="isOrigemLista">
+                        <ng-autocomplete
+                            [data]="produtosPesquisa"
+                            formControlName="descricao"
+                            [searchKeyword]="completeArg"
+                            (selected)="autoCompleteSelecionado($event)"
+                            (inputChanged)="buscaProdutos($event)"
+                            [itemTemplate]="itemTemplate"
+                            debounceTime="500">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate let-item>
+                            <a [innerHTML]="item.descricao"></a>
+                        </ng-template>
+                    </div> 
                 <div style="margin-top: 8px;">
                     <button #btnGrava  type="submit"   class="btn btn-success" style="margin-right: 5px;">Grava
                         <i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -23,7 +40,6 @@
                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
                        Volta
                     </button>
-                    <button class="btn btn-danger"  type="button" (click)="executaTeste()"> Teste</button>
                 </div>
             </div>
         </form>    

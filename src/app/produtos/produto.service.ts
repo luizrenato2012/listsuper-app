@@ -32,6 +32,10 @@ export class ProdutoService {
   }
 
   pesquisa(argumento: string) : Observable<Produto[]> {
+    if (!argumento) {
+      return of ([]);
+    }
+    
     argumento = this.capitalize(argumento);
     const produtosFiltro= this.produtos.filter(
       produto => produto.descricao.includes(argumento));

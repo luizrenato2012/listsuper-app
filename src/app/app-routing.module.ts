@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { TesteComponent } from './teste/teste/teste.component';
 
 
 const routes: Routes = [
@@ -10,6 +11,11 @@ const routes: Routes = [
   {
     path: 'produtos',
     loadChildren: './produtos/produtos.module#ProdutosModule'
+  },
+  {
+    path: 'testes',
+    component : TesteComponent
+
   },
   {
     path: '', redirectTo: '/', 

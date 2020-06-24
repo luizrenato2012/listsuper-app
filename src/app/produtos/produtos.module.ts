@@ -6,6 +6,8 @@ import { ProdutoInclusaoComponent } from './produto-inclusao/produto-inclusao.co
 import { CommonModule } from '@angular/common';
 import { ProdutosRoutingModule } from './produtos-routing.modules';
 
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+
 @NgModule({
     declarations :[
         ProdutoDownloadComponent,
@@ -19,7 +21,8 @@ import { ProdutosRoutingModule } from './produtos-routing.modules';
         FormsModule,
         CommonModule,
         ReactiveFormsModule,
-        ProdutosRoutingModule
+        ProdutosRoutingModule,
+        AutocompleteLibModule
     ]
 })
 export class ProdutosModule {
