@@ -7,6 +7,7 @@ import { ProdutoService } from '../produto.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListaCompraService } from 'src/app/listas-compra/lista-compra.service';
 import { Observable, from, of, concat } from 'rxjs';
+import { LogService } from 'src/app/shared/log.service';
 
 const TAMANHO_DESCRICAO=3;
 @Component({
@@ -32,7 +33,8 @@ export class ProdutoInclusaoComponent implements OnInit {
   constructor(private produtoService: ProdutoService, 
               private listaService : ListaCompraService,
               private builder: FormBuilder,
-              private router : Router) { }
+              private router : Router,
+              private logService: LogService) { }
 
   ngOnInit() {
    this.initForm();
@@ -105,6 +107,7 @@ export class ProdutoInclusaoComponent implements OnInit {
     observableTemp$.subscribe(retorno => {
       this.produtos = this.isOrigemLista ? selecionados.concat(retorno) : retorno;  
     });
+    this.logService.loga('Pesquisando');
 
   }
 

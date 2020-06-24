@@ -60,13 +60,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let produto of produtos">
+                  <tr *ngFor="let produto of produtos" [ngClass]="{'table-success' : produto.selecionado}">
                     <td>
                         <div class="row">
                             <div class="div_id" >
                                 {{produto.id}}
                             </div>
-                            <div *ngIf="isOrigemLista">
+                            <div>
                                 <input type="checkbox" 
                                 [checked]="produto.selecionado" 
                                 (change)="produto.selecionado= !produto.selecionado">
@@ -75,7 +75,7 @@
                     </td>
                     <td>{{produto.descricao}}</td>
                     <td>
-                        <button  class="btn btn-danger" (click)="exclui(produto.id)" >
+                        <button *ngIf="!isOrigemLista"  class="btn btn-danger" (click)="exclui(produto.id)" >
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </td>

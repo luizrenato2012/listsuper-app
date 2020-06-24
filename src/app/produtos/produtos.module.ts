@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ProdutosRoutingModule } from './produtos-routing.modules';
 
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { MensagensModule } from '../shared/mensagens/mensagens.module';
 
 @NgModule({
     declarations :[
@@ -20,6 +21,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     imports: [
         FormsModule,
         CommonModule,
+        MensagensModule,
         ReactiveFormsModule,
         ProdutosRoutingModule,
         AutocompleteLibModule

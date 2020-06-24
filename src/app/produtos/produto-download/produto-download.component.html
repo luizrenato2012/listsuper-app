@@ -1,1 +1,22 @@
-<p>produto-download works!</p>
+<div class="card">
+    <div class="card-header primary">
+        Download de Produtos
+    </div>
+
+    <div class='card-body'>
+        <app-mensagens [texto]="mensagem"></app-mensagens>
+        <div id="botao">
+            <button class="btn btn-primary" (click)="executaDownload()" style="width: 100%;" >
+                <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                Download
+            </button>
+        </div>
+    
+        <div id="logs" style="margin-top: 5px;">
+            <form >
+                <textarea class="form-control" cols="30" [(ngModel)]="log" name="log" rows="10"></textarea>
+            </form>
+        </div>
+    </div>
+    
+</div>

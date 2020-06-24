@@ -11,7 +11,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 @NgModule({
   declarations: [
     AppComponent,
-    TesteComponent,
+    TesteComponent
   ],
   imports: [
     BrowserModule,
