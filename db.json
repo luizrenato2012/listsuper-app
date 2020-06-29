@@ -1,0 +1,25 @@
+{
+	"produtos" : [
+		{"id": 1, "descricao": "Arroz", "selecionado": false},
+		{"id": 2, "descricao": "Feijão", "selecionado": false},
+		{"id": 3, "descricao": "Marcarrão", "selecionado": false},
+		{"id": 4, "descricao": "Carne bovina", "selecionado": false},
+		{"id": 5, "descricao": "Frango", "selecionado": false},
+		{"id": 6, "descricao": "Carne suina", "selecionado": false},
+		{"id": 7, "descricao": "Tomate", "selecionado": false},
+		{"id": 8, "descricao": "Sabão em pó", "selecionado": false},
+		{"id": 9, "descricao": "Detergente", "selecionado": false},
+		{"id": 10, "descricao": "Alho", "selecionado": false},
+		{"id": 11, "descricao": "Amaciante", "selecionado": false},
+		{"id": 12, "descricao": "Lava Louça", "selecionado": false},
+		{"id": 13, "descricao": "Palha de aço", "selecionado": false},
+		{"id": 14, "descricao": "Papel toalha", "selecionado": false},
+		{"id": 15, "descricao": "Papel higienico", "selecionado": false},
+		{"id": 16, "descricao": "Massa de bolo", "selecionado": false},
+		{"id": 17, "descricao": "Milho", "selecionado": false},
+		{"id": 18, "descricao": "Alface", "selecionado": false},
+		{"id": 19, "descricao": "Farinha", "selecionado": false},
+		{"id": 20, "descricao": "Farinha de trigo", "selecionado": false},
+		{"id": 21, "descricao": "Frango a passarinho", "selecionado": false}
+	]
+}

@@ -2,33 +2,29 @@ import { Injectable } from '@angular/core';
 import { Produto } from './produto';
 import { ProdutoInclusaoComponent } from './produto-inclusao/produto-inclusao.component';
 import { of, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { tap, filter, map, catchError } from 'rxjs/operators';
+import { ProdutoDbService } from './produtodb-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdutoService {
 
-  produtos : Produto[] = [];
-
-  constructor() {
-    this.init();
-   }
-
-  init() {
-    this.produtos = [
-      new Produto( 1, 'Arroz'),
-      new Produto( 2, 'Feijao'),
-      new Produto( 3, 'Macarrão'),
-      new Produto( 4, 'Oléo'),
-      new Produto( 5, 'Milho'),
-      new Produto( 6, 'Cebola')
-    ];
-  }
+  constructor(private httpClient: HttpClient,
+              private produtoDbService : ProdutoDbService) { }
 
   getProdutos() : Observable<Produto[]> {
-    let temp = this.copyProdutos(this.produtos);
-    return of (temp.filter(item => item !=null));
-    // return this.copyProdutos(this.produtos);
+    return new Observable(observer=> {
+        this.produtoDbService.lista().subscribe( retorno => {
+          if (retorno==null || retorno.length==0) {
+            this.download().subscribe( retorno=> console.log('Baixando produtos'));
+            observer.error('Sem produtos, tente novamente!');
+          } 
+          let temp = this.copyProdutos(retorno);
+          observer.next(temp.filter(item => item !=null));
+        })
+    });
   }
 
   pesquisa(argumento: string) : Observable<Produto[]> {
@@ -37,9 +33,9 @@ export class ProdutoService {
     }
     
     argumento = this.capitalize(argumento);
-    const produtosFiltro= this.produtos.filter(
-      produto => produto.descricao.includes(argumento));
-    return of (this.copyProdutos(produtosFiltro));  
+    return this.produtoDbService.pesquisa(argumento).pipe(
+      map ( lista => this.copyProdutos(lista))
+    )
   }
 
   private copyProdutos(produtos : Produto[]) {
@@ -52,12 +48,36 @@ export class ProdutoService {
 
   adiciona(descricao: string) {
     let index = ++this.produtos.length;
-    this.produtos.push(new Produto(index,this.capitalize(descricao)));
+    this.produtos.push(new Produto(this.capitalize(descricao), index));
   }
 
   exclui(id : number) {
     this.produtos = 
       this.produtos.filter(produto => produto.id !== id);
+  }
+
+  download() {
+    const URL="http://localhost:3000/produtos";
+
+    return new Observable(observer=> {
+      this.httpClient.get<Produto[]>(URL).subscribe(
+        retorno => {
+          if (retorno.length==0) {
+            observer.error(`Sem produtos para receber`);
+          }
+
+          this.produtoDbService.incluiLista(retorno).subscribe(
+            retorno => observer.next(retorno),
+            error => observer.error(error) 
+          );
+          observer.next('Finalizado download');
+          observer.complete();   
+
+        }
+      ), error => {
+        observer.error()}
+
+    });
   }
 
   capitalize(str : string) {

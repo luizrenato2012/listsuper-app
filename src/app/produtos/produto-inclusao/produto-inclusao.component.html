@@ -63,13 +63,13 @@
                   <tr *ngFor="let produto of produtos" [ngClass]="{'table-success' : produto.selecionado}">
                     <td>
                         <div class="row">
-                            <div class="div_id" >
-                                {{produto.id}}
-                            </div>
                             <div>
                                 <input type="checkbox" 
                                 [checked]="produto.selecionado" 
                                 (change)="produto.selecionado= !produto.selecionado">
+                            </div>
+                            <div class="div_id" >
+                                {{produto.id}}
                             </div>
                         </div>
                     </td>

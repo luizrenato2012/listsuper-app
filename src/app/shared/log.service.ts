@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogService {
 
-  private log = '';
+  // private log = '';
+
+  private logBehavior= new BehaviorSubject<string>('');
   constructor() { }
 
-  loga(mensagem: string) {
-    this.log = this.log + mensagem +'\n';
+  registra(mensagem: string) {
+    const dataHora = moment(new Date()).format('DD/MM/YYYY HH:MM:SS');
+    mensagem = dataHora + ' - ' + mensagem;
+    // this.log = this.log + mensagem +'\n';
+    this.logBehavior.next(mensagem);  
   }
 
-  exibe() {
-    return this.log;
+  getLog() {
+    return this.logBehavior.asObservable();
   }
 }

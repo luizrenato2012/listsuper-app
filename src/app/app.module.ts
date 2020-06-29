@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { TesteComponent } from './teste/teste/teste.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { HttpClientModule } from '@angular/common/http';
+import { DatabaseService } from './core/database/database-service';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     AppRoutingModule,
     CoreModule,
     BrowserAnimationsModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

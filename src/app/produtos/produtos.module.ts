@@ -8,6 +8,7 @@ import { ProdutosRoutingModule } from './produtos-routing.modules';
 
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { MensagensModule } from '../shared/mensagens/mensagens.module';
+import { DatabaseService } from '../core/database/database-service';
 
 @NgModule({
     declarations :[

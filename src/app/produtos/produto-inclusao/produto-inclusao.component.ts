@@ -93,7 +93,8 @@ export class ProdutoInclusaoComponent implements OnInit {
   }
 
   pesquisa(argumento?: FormControl) {
-    
+    this.ocultaMensagem();
+
     let descricao = argumento.value;
     let observableTemp$ : Observable<Produto[]>;
     let selecionados = this.getProdutosSelecionados();
@@ -106,8 +107,8 @@ export class ProdutoInclusaoComponent implements OnInit {
 
     observableTemp$.subscribe(retorno => {
       this.produtos = this.isOrigemLista ? selecionados.concat(retorno) : retorno;  
-    });
-    this.logService.loga('Pesquisando');
+      }, error=> this.imprimeMensagem(`Erro ao pesquisar ${JSON.stringify(error)}`));
+    this.logService.registra('Pesquisando');
 
   }
 

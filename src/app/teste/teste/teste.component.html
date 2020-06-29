@@ -8,8 +8,7 @@
             (inputChanged)='onChangeSearch($event)'
             (inputFocused)='onFocused($event)'
             [itemTemplate]="itemTemplate"
-            [notFoundTemplate]='notFoundTemplate'
-            >
+            [notFoundTemplate]='notFoundTemplate'>
 
         </ng-autocomplete>
 
@@ -20,5 +19,10 @@
         <ng-template $notFoundTemplate let-notFound>
             <div [innerHTML]="notFound"></div>
         </ng-template>
+    </div>
+
+    <div id="produto">
+        <button type="button" (click)="incluiProduto()">Inclui Produto</button> <br>
+        <button type="button" (click)="listaProduto()">Lista Produto</button> <br>
     </div>
 </div>

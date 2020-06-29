@@ -4,7 +4,7 @@ export class Produto {
     descricao: string;
     selecionado: boolean;
 
-    constructor(id: number, descricao: string) {
+    constructor( descricao: string, id?: number,) {
         this.id = id;
         this.descricao = descricao;
         this.selecionado = false;
