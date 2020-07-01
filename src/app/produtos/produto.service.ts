@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Produto } from './produto';
-import { ProdutoInclusaoComponent } from './produto-inclusao/produto-inclusao.component';
+
 import { of, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { tap, filter, map, catchError } from 'rxjs/operators';
+import {  map } from 'rxjs/operators';
+
+import { Produto } from './produto';
 import { ProdutoDbService } from './produtodb-service';
+import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
+
+const URL="http://localhost:3000/produtos";
 
 @Injectable({
   providedIn: 'root'
@@ -46,18 +50,29 @@ export class ProdutoService {
     });
   }
 
-  adiciona(descricao: string) {
-    let index = ++this.produtos.length;
-    this.produtos.push(new Produto(this.capitalize(descricao), index));
+  inclui(descricao: string) {
+    return new Observable(observer=>{
+      let produto = {descricao};
+      this.httpClient.post(URL, produto).subscribe(
+        (retorno: any) => {
+          produto = retorno;
+          this.produtoDbService.inclui(produto).subscribe(retorno=> observer.next('Inclusão finalizada'));
+      }, error=> observer.error(error)
+     )});
   }
 
   exclui(id : number) {
-    this.produtos = 
-      this.produtos.filter(produto => produto.id !== id);
+    return new Observable(observer=>{
+      this.httpClient.delete(URL + "/" + id).subscribe(
+        retorno=>
+          this.produtoDbService.exclui(id).subscribe(
+            retorno=> observer.next('Finalizada exclusao'),
+            error=> observer.error(error)),
+        error=> observer.error(error))    
+    });
   }
 
   download() {
-    const URL="http://localhost:3000/produtos";
 
     return new Observable(observer=> {
       this.httpClient.get<Produto[]>(URL).subscribe(

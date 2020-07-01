@@ -75,9 +75,13 @@ export class ProdutoInclusaoComponent implements OnInit {
     this.ocultaMensagem();
     if (confirm('Confirma a exclusao do produto?')) {
       console.log(`Excluindo  ${id}`);
-      this.produtoService.exclui(id);
-      this.pesquisa(this.formProduto.get('descricao') as FormControl);
-      this.imprimeMensagem("Produto Excluído com Sucesso!");
+      this.produtoService.exclui(id).subscribe(retorno=> {
+        this.pesquisa(this.formProduto.get('descricao') as FormControl);
+        this.imprimeMensagem("Produto Excluído com Sucesso!");
+      }, error=> {
+        console.error(error);
+        this.imprimeMensagem("Erro ao excluir");
+      })
     }
   }
 
@@ -87,9 +91,13 @@ export class ProdutoInclusaoComponent implements OnInit {
       this.imprimeMensagem("Erro ao incluir produto - descricao invalida");
       return;
     }
-    this.produtoService.adiciona(descricao);
-    descricaoControl.reset();
-    this.imprimeMensagem("Produto gravado com sucesso");
+    this.produtoService.inclui(descricao).subscribe(retorno=>{
+      descricaoControl.reset();
+      this.imprimeMensagem("Produto gravado com sucesso");
+    }, error=> {
+      console.log(error);
+      this.imprimeMensagem("Erro ao gravar produto");
+    })
   }
 
   pesquisa(argumento?: FormControl) {

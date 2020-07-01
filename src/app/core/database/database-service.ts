@@ -132,4 +132,29 @@ export class DatabaseService{
             });
         });
     }
+
+    exclui(id: number) {
+        return new Observable ( observer=>{
+            if (!this.storeName) {
+                observer.error(`Sem nome de store definido`);
+            }
+
+            this.factory.getConnection().subscribe( connection => {
+                let request = connection
+                    .transaction([this.storeName], 'readwrite')
+                    .objectStore(this.storeName)
+                    .delete(id);
+
+                request.addEventListener('success', ()=> {
+                    observer.next(`Objeto excluido com sucesso.`);
+                });
+
+                request.addEventListener('error', (error)=>{
+                    console.log(`Erro ao exclui ${this.storeName}: ${JSON.stringify(error)}`);
+                    this.logService.registra(`Erro ao exclui ${this.storeName}: ${JSON.stringify(error)}`);
+                    observer.error(error);
+                });
+            });
+        });
+    }
 }

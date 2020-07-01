@@ -20,7 +20,7 @@ export class ProdutoDbService {
         return this.databaseService.listaTodos();
     }
 
-    inclui(produto: Produto) {
+    inclui(produto: any) {
         return this.databaseService.inclui(produto);
     }
 
@@ -30,5 +30,9 @@ export class ProdutoDbService {
 
     pesquisa(nome: string) {
         return this.databaseService.pesquisaPorCampoTexto('descricao', nome);
+    }
+
+    exclui(id: number) {
+        return this.databaseService.exclui(id);
     }
 }
