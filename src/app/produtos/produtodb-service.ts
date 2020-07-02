@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Produto } from './produto';
+
 import { ConnectionFactory } from '../core/database/ConnectionFactory';
 import { DatabaseService } from '../core/database/database-service';
 import { LogService } from '../shared/log.service';
+import { map } from 'rxjs/operators';
+import { ListaCompraMenuComponent } from '../listas-compra/lista-compra-menu/lista-compra-menu.component';
+import { ListaCompra } from '../listas-compra/lista-compra';
 
 @Injectable({
     providedIn: 'root'

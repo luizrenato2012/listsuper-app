@@ -25,9 +25,7 @@ export class ProdutoDownloadComponent implements OnInit {
   }
 
   executaDownload() {
-    console.log('Download executado');
     this.logService.registra('Iniciando download...');
-    // this.log = this.logService.exibe();
     
     this.produtoService.download()
       .subscribe( retorno => {
@@ -36,11 +34,9 @@ export class ProdutoDownloadComponent implements OnInit {
                   // this.exibeMensagem(this.logService.exibe())
                 }, error => {
                   console.log(error);
-                  this.logService.registra(`Erro ao baixar produtos`);
-                  // this.exibeMensagem(this.logService.exibe());
+                  this.logService.registra(error);
                 }, () => {
                   this.logService.registra('Finalizado Download');
-                  // this.exibeMensagem(this.logService.exibe());
                 }
       );
   }

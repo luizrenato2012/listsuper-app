@@ -20,7 +20,7 @@
                             (selected)="autoCompleteSelecionado($event)"
                             (inputChanged)="buscaProdutos($event)"
                             [itemTemplate]="itemTemplate"
-                            debounceTime="500">
+                            debounceTime="400">
                         </ng-autocomplete>
 
                         <ng-template #itemTemplate let-item>

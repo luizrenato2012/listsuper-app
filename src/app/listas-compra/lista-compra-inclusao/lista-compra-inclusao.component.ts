@@ -18,14 +18,14 @@ export class ListaCompraInclusaoComponent implements OnInit {
 
   classeSelecao="table-danger";
 
-  constructor(private service: ListaCompraService, 
+  constructor(private listaService: ListaCompraService, 
               private router: Router) { 
-                console.log('Criando lista-compra-inclusao');
+                // console.log('Criando lista-compra-inclusao');
               }
 
   ngOnInit() {
-    console.log('Iniciando lista-compra-inclusao');
-    this.listaEdicao = this.service.getListaEdicao() || new ListaCompra();
+    // console.log('Iniciando lista-compra-inclusao');
+    this.listaEdicao = this.listaService.getListaEdicao() || new ListaCompra();
   }
 
   volta(){
@@ -33,8 +33,19 @@ export class ListaCompraInclusaoComponent implements OnInit {
   }
 
   grava() {
-    this.service.grava();
-    this.imprimeMensagem('Lista gravada com sucesso!!');
+    const isInsert = this.listaEdicao.id===null;
+    if (isInsert) {
+      this.listaEdicao.dataHora = new Date();
+    }
+    // retirado id na inclusao pela geracao do mesmo no IndexedDB
+    this.listaService.grava(isInsert ? this.listaEdicao.getAny() : this.listaEdicao)
+      .subscribe( (resultado: any) => {
+        console.log(`Lista gravada: ${JSON.stringify(resultado)}`)
+        if (isInsert){
+          this.listaEdicao.id = resultado;
+        }
+        this.imprimeMensagem('Lista gravada com sucesso!!');
+    });
   }
 
   escolhe(){

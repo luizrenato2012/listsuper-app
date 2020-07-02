@@ -25,7 +25,7 @@ export class ProdutoService {
             this.download().subscribe( retorno=> console.log('Baixando produtos'));
             observer.error('Sem produtos, tente novamente!');
           } 
-          let temp = this.copyProdutos(retorno);
+          let temp = this._copyProdutos(retorno);
           observer.next(temp.filter(item => item !=null));
         })
     });
@@ -36,13 +36,13 @@ export class ProdutoService {
       return of ([]);
     }
     
-    argumento = this.capitalize(argumento);
+    argumento = this._capitalize(argumento);
     return this.produtoDbService.pesquisa(argumento).pipe(
-      map ( lista => this.copyProdutos(lista))
+      map ( lista => this._copyProdutos(lista))
     )
   }
 
-  private copyProdutos(produtos : Produto[]) {
+  private _copyProdutos(produtos : Produto[]) {
     let strProduto = '';
     return produtos.map(produto => {
       strProduto = JSON.stringify(produto);
@@ -73,29 +73,31 @@ export class ProdutoService {
   }
 
   download() {
-
     return new Observable(observer=> {
       this.httpClient.get<Produto[]>(URL).subscribe(
-        retorno => {
-          if (retorno.length==0) {
-            observer.error(`Sem produtos para receber`);
-          }
-
-          this.produtoDbService.incluiLista(retorno).subscribe(
-            retorno => observer.next(retorno),
-            error => observer.error(error) 
-          );
-          observer.next('Finalizado download');
-          observer.complete();   
-
-        }
-      ), error => {
-        observer.error()}
-
-    });
+        retorno => this._processaRetorno(observer, retorno),
+        error => {
+          let errorMsg = error.message ? error.message : JSON.stringify(error);
+          console.log(`Erro no download:  ${error}`);
+          observer.error(`Erro no servidor ${errorMsg}`);
+        });
+      });
   }
 
-  capitalize(str : string) {
+  private _processaRetorno(observer, retorno) {
+    if (retorno.length==0) {
+      observer.error(`Sem produtos para receber`);
+    }
+
+    this.produtoDbService.incluiLista(retorno).subscribe(
+      retorno => observer.next(retorno),
+      error => observer.error(error) 
+    );
+    observer.next('Finalizado download');
+    observer.complete();   
+  }
+
+  _capitalize(str : string) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 }

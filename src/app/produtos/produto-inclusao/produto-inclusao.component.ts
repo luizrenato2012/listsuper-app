@@ -97,7 +97,7 @@ export class ProdutoInclusaoComponent implements OnInit {
     }, error=> {
       console.log(error);
       this.imprimeMensagem("Erro ao gravar produto");
-    })
+    });
   }
 
   pesquisa(argumento?: FormControl) {
@@ -160,7 +160,7 @@ export class ProdutoInclusaoComponent implements OnInit {
   }
 
   executaTeste() {
-    console.log('Executando teste');
+   // console.log('Executando teste');
     let itens = this.criaTeste();
     itens.subscribe( item => {
       console.log( item);
@@ -168,13 +168,13 @@ export class ProdutoInclusaoComponent implements OnInit {
   }
 
   buscaProdutos(item: string) {
-    console.log(`Buscando ${item}`);
+    //console.log(`Buscando ${item}`);
     this.produtoService.pesquisa( item)
       .subscribe(produtos => this.produtosPesquisa = produtos);
   }
 
   autoCompleteSelecionado(valor) {
-    console.log(`Selecionado ${valor}`);
+    //console.log(`Selecionado ${valor}`);
     this.formProduto.get('descricao').setValue(valor.descricao);
     this.produtos = this.getProdutosSelecionados();
     this.produtos.push(valor);

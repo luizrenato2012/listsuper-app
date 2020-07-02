@@ -14,13 +14,16 @@ export class ConnectionFactory {
 
         return new Observable(observer=> {
 
-            let openDbRequest = window.indexedDB.open('listsuper', 1);
+            let openDbRequest = window.indexedDB.open('listsuper', 5);
 
             openDbRequest.addEventListener('upgradeneeded', (event : any) => {
                 this.logService.registra('Atualizando db');
                 this.connection = event.target.result;
                 if (! this.connection.objectStoreNames.contains('produtos')){
                     this.connection.createObjectStore('produtos', { autoIncrement: true});
+                }
+                if (! this.connection.objectStoreNames.contains('listasCompras')){
+                    this.connection.createObjectStore('listasCompras', {keyPath: 'id', autoIncrement: true});
                 }
                 observer.next(this.connection);
             });

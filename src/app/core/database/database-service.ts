@@ -3,7 +3,7 @@ import { ConnectionFactory } from './ConnectionFactory';
 import { LogService } from 'src/app/shared/log.service';
 
 export class DatabaseService{
-
+    /** teste de instanciacao */
     contador = 0;
 
     constructor(private factory : ConnectionFactory,
@@ -77,6 +77,35 @@ export class DatabaseService{
         });
     }
 
+    pesquisaPorId (id : number) {
+
+        return new Observable<any[]> ( observer => {
+            if (!this.storeName) {
+                observer.error(`Sem nome de store definido`);
+            }
+
+            this.factory.getConnection().subscribe( connection => {
+                let resultSet = connection
+                    .transaction(this.storeName, 'readonly')
+                    .objectStore(this.storeName)
+                    .get(id);
+
+                resultSet.addEventListener('success', ()=> {
+                    let resultado = resultSet.result;
+                    observer.next(resultado);
+                });
+
+                resultSet.addEventListener('error', (error)=>{
+                    console.log(`Erro ao listar ${JSON.stringify(error)}`);
+                    this.logService.registra(`Erro ao listar ${this.storeName}: ${JSON.stringify(error)}`);
+                    observer.error(error);
+                });
+            }, error =>{
+                observer.error(`Erro ao conectar ${this.storeName} - ${error}`);
+            });
+        });
+    }
+
     inclui(objeto: any) {
         return new Observable ( observer=>{
             if (!this.storeName) {
@@ -89,7 +118,36 @@ export class DatabaseService{
                     .objectStore(this.storeName)
                     .add(objeto);
 
-                request.addEventListener('success', ()=> {
+                request.addEventListener('success', (evt: any)=> {
+                    console.log(`Objeto criado id: ${JSON.stringify(evt.target.result)}`);
+                    // console.log(evt);
+                    observer.next(evt.target.result);
+                });
+
+                request.addEventListener('error', (error)=>{
+                    console.log(`Erro ao incluir ${this.storeName}: ${JSON.stringify(error)}`);
+                    this.logService.registra(`Erro ao incluir ${this.storeName}: ${JSON.stringify(error)}`);
+                    observer.error(error);
+                });
+            });
+        });
+    }
+
+    /** inclui ou altera objeto */
+    grava(objeto: any) {
+        return new Observable ( observer=>{
+            if (!this.storeName) {
+                observer.error(`Sem nome de store definido`);
+            }
+
+            this.factory.getConnection().subscribe( connection => {
+                let request = connection
+                    .transaction([this.storeName], 'readwrite')
+                    .objectStore(this.storeName)
+                    .put(objeto);
+
+                request.addEventListener('success', (evt)=> {
+                    console.log(`${JSON.stringify(evt)}`);
                     observer.next(`Objeto cadastrado com sucesso.`);
                 });
 
@@ -98,6 +156,7 @@ export class DatabaseService{
                     this.logService.registra(`Erro ao incluir ${this.storeName}: ${JSON.stringify(error)}`);
                     observer.error(error);
                 });
+                
             });
         });
     }
@@ -155,6 +214,36 @@ export class DatabaseService{
                     observer.error(error);
                 });
             });
+        });
+    }
+
+    altera(objeto: any){
+        return new Observable ( observer=>{
+            if (!this.storeName) {
+                observer.error(`Sem nome de store definido`);
+            }
+
+            this.factory.getConnection().subscribe( connection => {
+                this.processaAlteracao(connection, objeto, observer);
+            });
+        });
+    }
+
+    private processaAlteracao(connection, objeto, observer) {
+        let request = connection
+            .transaction([this.storeName], 'readwrite')
+            .objectStore(this.storeName)
+            .put(objeto);
+
+        request.addEventListener('success', (evt:any)=> {
+            console.log(`Alterando ${evt}`);
+            observer.next(`Objeto cadastrado com sucesso.`);
+        });
+
+        request.addEventListener('error', (error)=>{
+            console.log(`Erro ao incluir ${this.storeName}: ${JSON.stringify(error)}`);
+            this.logService.registra(`Erro ao incluir ${this.storeName}: ${JSON.stringify(error)}`);
+            observer.error(error);
         });
     }
 }

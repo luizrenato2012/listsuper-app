@@ -44,3 +44,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+#outros
+listsuper-api-0.0.1-SNAPSHOT.jar

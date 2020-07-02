@@ -1,68 +1,68 @@
 import { Injectable } from '@angular/core';
 import { ListaCompra, ItemCompra } from './lista-compra';
 import { Produto } from '../produtos/produto';
+import { ListaCompraDbService } from './lista-compradb-service';
+import { Observable } from 'rxjs';
+import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListaCompraService {
 
-  listas : ListaCompra [] = [];
   listaEdicao : ListaCompra;
 
-  constructor() { 
-    this.init();
-  }
-
-  init(){
-    this.listas.push(
-      new ListaCompra(null, null)
-    );
-
-    this.listas.push(
-      new ListaCompra(1, new Date())
-    );
-  }
+  constructor(private listaDbService: ListaCompraDbService) { 
+   }
 
   getListas() {
-    return this.listas;
+    return new Observable(observer=> {
+      this.listaDbService.lista().subscribe( lista => {
+      let novaLista = [new ListaCompra(null, null)];
+
+      observer.next(novaLista.concat(
+        lista.map(elemento=> new ListaCompra(elemento.id, elemento.dataHora))));
+    }, error=> observer.error(error));
+    });
   }
 
   getListaEdicao() {
+    // console.log(`Getando lista edicao ${JSON.stringify(this.listaEdicao)}`);
     return this.listaEdicao;
   }
 
   setListaEdicao(id : number) {
-    if (id==null){
-      this.listaEdicao = new ListaCompra(null,null);
-      return;
-    }
-
-    const lista = this.getListaById(id);
-    if (lista==null) {
-      throw Error('Não encontrada Lista de Compra id [' + id + ']');
-    }
-    this.listaEdicao = lista;
+    return new Observable(observer=>{
+      // console.log(`Setando lista edicao ${JSON.stringify(this.listaEdicao)}`);
+      if (id==null){
+        this.listaEdicao = new ListaCompra(null,null);
+        observer.next();
+      }
+  
+      const lista = this.listaDbService.carrega(id).subscribe(lista=> {
+        if (lista==null) {
+          observer.error('Não encontrada Lista de Compra id [' + id + ']');
+        }
+        this.listaEdicao = ListaCompra.build(lista);
+        observer.next();
+        });
+    });
   }
-
-  getListaById(id: number) {
-    return this.listas.find( lista => lista.id === id);
-  }
+   
 
   adicionaItens(produtos : Produto[]){
     produtos.forEach( produto => this.listaEdicao.itens.push(new ItemCompra(produto)) );
   }
 
-  grava(){
-    if(this.listaEdicao.id==null) {
-      this.listaEdicao.id = this.getNextId();
-      this.listaEdicao.dataHora = new Date();
-      this.listas.push(this.listaEdicao);
+  grava(listaCompra : any){
+    if (listaCompra.id==null) {
+      return  this.listaDbService.inclui(listaCompra);
+    } else {
+      return this.listaDbService.altera(listaCompra);
     }
   }
 
-  private getNextId() {
-    return this.listas.length++;
-  }
+ 
+
 
 }

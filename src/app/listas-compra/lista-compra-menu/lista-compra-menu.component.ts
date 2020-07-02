@@ -17,13 +17,13 @@ export class ListaCompraMenuComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    this.listas = this.service.getListas();
+    this.service.getListas().subscribe((listas: any[])=> this.listas = listas);
   }
 
   seleciona () {
-    console.log(`item selecionado ${this.strIdSelecionado}` );
-    this.service.setListaEdicao(this.strIdSelecionado!=="null" ? parseInt(this.strIdSelecionado) : null);
-    this.router.navigateByUrl('/listas/nova');
+    // console.log(`item selecionado ${this.strIdSelecionado}` );
+    const idSelecionado = this.strIdSelecionado!=="null" ? parseInt(this.strIdSelecionado) : null;
+    this.service.setListaEdicao(idSelecionado).subscribe(()=> this.router.navigateByUrl('/listas/nova'));
   }
 
 }

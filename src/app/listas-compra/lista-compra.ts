@@ -1,15 +1,29 @@
-import * as moment from 'moment';
-import { ProdutosRoutingModule } from '../produtos/produtos-routing.modules';
+
 import { Produto } from '../produtos/produto';
+
+import * as moment from 'moment';
+import { ListaCompraMenuComponent } from './lista-compra-menu/lista-compra-menu.component';
 
 export class ListaCompra{
     id: number;
     dataHora: Date;
     itens : ItemCompra[] = [];
 
-    constructor(id?: number, dataHora? : Date){
+    constructor(id?: number, dataHora? : Date, itens?: ItemCompra[]){
         this.id = id;
         this.dataHora = dataHora;
+        this.itens = itens;
+    }
+
+    static build(objeto: any) {
+        return new ListaCompra( objeto.id,objeto.dataHora, objeto.itens);
+    }
+
+    getAny () {
+        return {
+            dataHora: this.dataHora,
+            itens: this.itens 
+        }
     }
 
     get nome () {
