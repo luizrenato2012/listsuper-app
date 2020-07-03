@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class LogService {
   constructor() { }
 
   registra(mensagem: string) {
-    const dataHora = moment(new Date()).format('DD/MM/YYYY HH:MM:SS');
+    const dataHora = moment(new Date()).format('HH:MM:SS');
     mensagem = dataHora + ' - ' + mensagem;
     // this.log = this.log + mensagem +'\n';
     this.logBehavior.next(mensagem);  

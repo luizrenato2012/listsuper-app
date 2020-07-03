@@ -6,9 +6,10 @@ import {  map } from 'rxjs/operators';
 
 import { Produto } from './produto';
 import { ProdutoDbService } from './produtodb-service';
-import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
+import { environment } from 'src/environments/environment';
 
-const URL="http://localhost:3000/produtos";
+
+const URL_PRODUTOS=`${environment.apiUrl}/produtos`;
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,7 @@ export class ProdutoService {
   inclui(descricao: string) {
     return new Observable(observer=>{
       let produto = {descricao};
-      this.httpClient.post(URL, produto).subscribe(
+      this.httpClient.post(URL_PRODUTOS, produto).subscribe(
         (retorno: any) => {
           produto = retorno;
           this.produtoDbService.inclui(produto).subscribe(retorno=> observer.next('Inclusão finalizada'));
@@ -63,7 +64,7 @@ export class ProdutoService {
 
   exclui(id : number) {
     return new Observable(observer=>{
-      this.httpClient.delete(URL + "/" + id).subscribe(
+      this.httpClient.delete(URL_PRODUTOS + "/" + id).subscribe(
         retorno=>
           this.produtoDbService.exclui(id).subscribe(
             retorno=> observer.next('Finalizada exclusao'),
@@ -74,11 +75,11 @@ export class ProdutoService {
 
   download() {
     return new Observable(observer=> {
-      this.httpClient.get<Produto[]>(URL).subscribe(
+      this.httpClient.get<Produto[]>(URL_PRODUTOS).subscribe(
         retorno => this._processaRetorno(observer, retorno),
         error => {
           let errorMsg = error.message ? error.message : JSON.stringify(error);
-          console.log(`Erro no download:  ${error}`);
+          console.log(`Erro no download:  ${JSON.stringify(error)}`);
           observer.error(`Erro no servidor ${errorMsg}`);
         });
       });

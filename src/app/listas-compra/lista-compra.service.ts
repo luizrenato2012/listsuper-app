@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { ListaCompra, ItemCompra } from './lista-compra';
 import { Produto } from '../produtos/produto';
 import { ListaCompraDbService } from './lista-compradb-service';
-import { Observable } from 'rxjs';
-import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +51,7 @@ export class ListaCompraService {
    
 
   adicionaItens(produtos : Produto[]){
+    console.log(`Adicionando itens ${produtos}` );
     produtos.forEach( produto => this.listaEdicao.itens.push(new ItemCompra(produto)) );
   }
 

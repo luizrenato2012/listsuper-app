@@ -63,6 +63,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "test" :{
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ]
             }
           }
         },
@@ -74,7 +82,10 @@
           "configurations": {
             "production": {
               "browserTarget": "listsuper-app:build:production"
-            }
+            },
+            "test": {
+              "browserTarget": "listsuper-app:build:test"
+            },
           }
         },
         "extract-i18n": {

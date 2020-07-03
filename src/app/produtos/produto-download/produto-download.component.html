@@ -5,11 +5,25 @@
 
     <div class='card-body'>
         <app-mensagens [texto]="mensagem"></app-mensagens>
-        <div id="botao">
-            <button class="btn btn-primary" (click)="executaDownload()" style="width: 100%;margin-bottom: 5px;" >
-                <i class="fa fa-floppy-o" aria-hidden="true"></i>
-                Download
-            </button>
+        <div id="botao" class="row">
+            <div class="col-sm">
+                <button class="btn btn-primary" (click)="executaDownload()" style="width: 100%;margin-bottom: 5px;" >
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    Download
+                </button>
+            </div>
+            <div class="col-sm">
+                <button class="col-sm btn btn-secondary" (click)="limpaLog()" style="width: 100%;margin-bottom: 5px;" >
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    Limpa Log
+                </button>
+            </div>
+            <div class="col-sm">
+                <button class="col-sm btn btn-info" (click)="verificaServer()" style="width: 100%;margin-bottom: 5px;" >
+                    <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                    Checa rede
+                </button>
+            </div>
         </div>
     
         <div id="logs" style="margin-top: 5px;">

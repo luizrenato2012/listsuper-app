@@ -12,7 +12,7 @@ export class ListaCompra{
     constructor(id?: number, dataHora? : Date, itens?: ItemCompra[]){
         this.id = id;
         this.dataHora = dataHora;
-        this.itens = itens;
+        this.itens = itens || [];
     }
 
     static build(objeto: any) {

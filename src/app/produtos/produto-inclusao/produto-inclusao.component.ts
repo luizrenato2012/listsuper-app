@@ -134,10 +134,16 @@ export class ProdutoInclusaoComponent implements OnInit {
 
   volta() {
     if (this.isOrigemLista) {
+      try {
         let selecionados = this.getProdutosSelecionados();
         this.listaService.adicionaItens(selecionados);
         this.router.navigate(['listas','nova']);
         return;
+      } catch (error) {
+        console.log(error);
+        this.logService.registra(`Erro ao volta pra lista`);
+        this.logService.registra(error);
+      }
     }
     this.router.navigate( ['']);
   }

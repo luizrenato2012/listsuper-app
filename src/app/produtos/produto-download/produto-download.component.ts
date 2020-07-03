@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
 import { LogService } from 'src/app/shared/log.service';
 import { ProdutoService } from '../produto.service';
-import { Observable } from 'rxjs';
+
+import { environment } from '../../../environments/environment';
+
+const URL_STATUS=`${environment.apiUrl}/status`;
 
 @Component({
   selector: 'app-produto-download',
@@ -15,7 +21,8 @@ export class ProdutoDownloadComponent implements OnInit {
   logObservable$ : Observable<string>;
 
   constructor(private logService : LogService,
-              private produtoService: ProdutoService) { }
+              private produtoService: ProdutoService,
+              private httpCliente: HttpClient) { }
 
   ngOnInit() {
     this.logObservable$ = this.logService.getLog();
@@ -43,6 +50,26 @@ export class ProdutoDownloadComponent implements OnInit {
 
   exibeMensagem(mensagem: string){
     this.log+=   mensagem + "\n" ;
+  }
+
+  verificaServer() {
+    let mensagem ='';
+    this.logService.registra('Executando manutenção');
+    this.httpCliente.get(URL_STATUS).subscribe((status:any)=> {
+      mensagem = `Situacao: ${status.descricao}\n`;
+      mensagem = mensagem.concat(`Servidor: ${status.endereco}\n`);
+      mensagem = mensagem.concat(`No Produtos : ${status.numeroProdutos}\n`);
+      this.logService.registra(mensagem);
+    }, error=> {
+      console.log(error);
+      this.logService.registra(JSON.stringify(error));
+    })
+
+  }
+
+  limpaLog() {
+    this.logService.registra('Limpando log');
+    this.log='';
   }
 
 }
