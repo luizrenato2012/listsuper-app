@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, AbstractControl } from '@angular/forms';
 import { distinctUntilChanged, filter, tap, map, toArray, defaultIfEmpty, mergeAll } from 'rxjs/operators';
 
 import { Produto } from '../produto';
@@ -85,7 +85,7 @@ export class ProdutoInclusaoComponent implements OnInit {
     }
   }
 
-  grava(descricaoControl: FormControl) {
+  grava(descricaoControl: AbstractControl) {
     let descricao = descricaoControl.value;
     if (descricao==null || descricao.length < TAMANHO_DESCRICAO) {
       this.imprimeMensagem("Erro ao incluir produto - descricao invalida");
@@ -100,7 +100,7 @@ export class ProdutoInclusaoComponent implements OnInit {
     });
   }
 
-  pesquisa(argumento?: FormControl) {
+  pesquisa(argumento?: AbstractControl) {
     this.ocultaMensagem();
 
     let descricao = argumento.value;

@@ -16,7 +16,7 @@
             <a [innerHTML]="item.nome"></a>
         </ng-template>
 
-        <ng-template $notFoundTemplate let-notFound>
+        <ng-template #notFoundTemplate let-notFound>
             <div [innerHTML]="notFound"></div>
         </ng-template>
     </div>
