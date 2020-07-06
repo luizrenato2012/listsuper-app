@@ -38,4 +38,8 @@ export class ProdutoDbService {
     exclui(id: number) {
         return this.databaseService.exclui(id);
     }
+
+    esvazia() {
+        return this.databaseService.esvazia();
+    }
 }

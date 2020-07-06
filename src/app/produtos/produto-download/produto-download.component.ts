@@ -33,20 +33,37 @@ export class ProdutoDownloadComponent implements OnInit {
 
   executaDownload() {
     this.logService.registra('Iniciando download...');
-    
-    this.produtoService.download()
-      .subscribe( retorno => {
-                  console.log(`Retorno \n ${JSON.stringify(retorno)}`);
-                  this.logService.registra(`${retorno}`);
-                  // this.exibeMensagem(this.logService.exibe())
-                }, error => {
-                  console.log(error);
-                  this.logService.registra(error);
-                }, () => {
-                  this.logService.registra('Finalizado Download');
-                }
-      );
+
+    this.produtoService.esvaziaStore().subscribe(()=> {
+      this.logService.registra('Esvalizada coleção');
+      this.produtoService.download().subscribe(()=> {
+        this.logService.registra('Finalizado download coleção');
+      }, error=> {
+        this._trataLog(error);
+      });
+    }, error => {
+      this._trataLog(error);
+    });
   }
+
+  private _trataLog(error) {
+    console.log(error);
+    this.logService.registra(error);
+  }
+
+  // private _download() {
+  //   this.produtoService.download()
+  //     .subscribe( retorno => {
+  //           console.log(`Retorno \n ${JSON.stringify(retorno)}`);
+  //           this.logService.registra(`${retorno}`);
+  //           // this.exibeMensagem(this.logService.exibe())
+  //         }, error => {
+  //           this._trataLog(error);
+  //         }, () => {
+  //           this.logService.registra('Finalizado Download');
+  //         }
+  //     );
+  // }
 
   exibeMensagem(mensagem: string){
     this.log+=   mensagem + "\n" ;
@@ -64,7 +81,6 @@ export class ProdutoDownloadComponent implements OnInit {
       console.log(error);
       this.logService.registra(JSON.stringify(error));
     })
-
   }
 
   limpaLog() {
