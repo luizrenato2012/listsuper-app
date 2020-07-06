@@ -43,6 +43,10 @@ export class ProdutoService {
     )
   }
 
+  _capitalize(str : string) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
   private _copyProdutos(produtos : Produto[]) {
     produtos.sort(this._orderna);
     let strProduto = '';
@@ -121,7 +125,8 @@ export class ProdutoService {
     observer.complete();   
   }
 
-  _capitalize(str : string) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  esvaziaStore() {
+    return this.produtoDbService.esvazia();
   }
+
 }

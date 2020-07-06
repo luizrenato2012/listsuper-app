@@ -27,8 +27,32 @@ export class ListaCompraService {
   }
 
   getListaEdicao() {
-    // console.log(`Getando lista edicao ${JSON.stringify(this.listaEdicao)}`);
+    let id = 0 ;
+    this._ordernaItens(this.listaEdicao.itens);
+    this.listaEdicao.itens.forEach(item=> item.id = ++id);
     return this.listaEdicao;
+  }
+
+  private _ordernaItens(itens : ItemCompra[]){
+    if (!itens) {
+      return [];
+    }
+
+    itens.sort((item1: ItemCompra, item2: ItemCompra)  => {
+      if (!item1 || !item1.descricao) {
+        return 1;
+      }
+      if (!item2 || !item2.descricao) {
+        return -1;
+      }
+      if (item1.descricao < item2.descricao){
+        return -1;
+      }
+      if (item1.descricao > item2.descricao){
+        return 1;
+      }
+      return 0;
+    });
   }
 
   setListaEdicao(id : number) {

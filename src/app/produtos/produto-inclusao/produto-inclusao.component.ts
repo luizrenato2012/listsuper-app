@@ -1,12 +1,12 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, AbstractControl } from '@angular/forms';
-import { distinctUntilChanged, filter, tap, map, toArray, defaultIfEmpty, mergeAll } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Produto } from '../produto';
 import { ProdutoService } from '../produto.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ListaCompraService } from 'src/app/listas-compra/lista-compra.service';
-import { Observable, from, of, concat } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { LogService } from 'src/app/shared/log.service';
 
 const TAMANHO_DESCRICAO=3;

@@ -30,7 +30,7 @@ export class ConnectionFactory {
 
             openDbRequest.addEventListener('success', (event:any) => {
                 this.connection = event.target.result;
-                this.logService.registra('Retornando conexao');
+                //this.logService.registra('Retornando conexao');
                 observer.next(this.connection );
             });
 

@@ -217,6 +217,35 @@ export class DatabaseService{
         });
     }
 
+    esvazia() {
+        return new Observable ( observer=>{
+            if (!this.storeName) {
+                observer.error(`Sem nome de store definido`);
+            }
+
+            this.factory.getConnection().subscribe( connection => {
+                let request = connection
+                    .transaction([this.storeName], 'readwrite')
+                    .objectStore(this.storeName)
+                    .clear();
+
+                request.addEventListener('success', ()=> {
+                    observer.next(`Store ${this.storeName} esvaziada com sucesso.`);
+                });
+
+                request.addEventListener('complete', ()=> {
+                    observer.complete();
+                });
+
+                request.addEventListener('error', (error)=>{
+                    console.log(`Erro ao store ${this.storeName}: ${JSON.stringify(error)}`);
+                    this.logService.registra(`Erro ao esvaziar ${this.storeName}: ${JSON.stringify(error)}`);
+                    observer.error(error);
+                });
+            });
+        });
+    }
+
     altera(objeto: any){
         return new Observable ( observer=>{
             if (!this.storeName) {
