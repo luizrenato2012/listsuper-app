@@ -44,11 +44,34 @@ export class ProdutoService {
   }
 
   private _copyProdutos(produtos : Produto[]) {
+    produtos.sort(this._orderna);
     let strProduto = '';
     return produtos.map(produto => {
       strProduto = JSON.stringify(produto);
       return JSON.parse(strProduto);
     });
+  }
+
+  _orderna(produto1 : Produto, produto2: Produto){
+    const descricao1 = produto1.descricao;
+    const descricao2 = produto2.descricao;
+
+    if (produto1 ==null || descricao1==null) {
+      return -1;
+    }
+    if (produto2 ==null || descricao2==null) {
+      return 1;
+    }
+
+    if (descricao1 < descricao2) {
+      return -1;
+    }
+
+    if (descricao2 < descricao1) {
+      return 1;
+    }
+
+    return 0;
   }
 
   inclui(descricao: string) {
