@@ -17,15 +17,17 @@ export class ListaCompraInclusaoComponent implements OnInit {
   itemEdicao = new ItemCompra();
 
   classeSelecao="table-danger";
+  ordenacoes : any[] = [];
 
   constructor(private listaService: ListaCompraService, 
-              private router: Router) { 
-                // console.log('Criando lista-compra-inclusao');
-              }
+              private router: Router) { }
 
   ngOnInit() {
-    // console.log('Iniciando lista-compra-inclusao');
     this.listaEdicao = this.listaService.getListaEdicao() || new ListaCompra();
+    this.ordenacoes = [ 
+      {'tipo': 'ID', 'label': 'Ordem por Criação'},
+      {'tipo': 'DESCRICAO', 'label': 'Ordem por Descricao'}
+    ];
   }
 
   volta(){
@@ -40,7 +42,6 @@ export class ListaCompraInclusaoComponent implements OnInit {
     // retirado id na inclusao pela geracao do mesmo no IndexedDB
     this.listaService.grava(isInsert ? this.listaEdicao.getAny() : this.listaEdicao)
       .subscribe( (resultado: any) => {
-        console.log(`Lista gravada: ${JSON.stringify(resultado)}`)
         if (isInsert){
           this.listaEdicao.id = resultado;
         }
@@ -70,7 +71,59 @@ export class ListaCompraInclusaoComponent implements OnInit {
   }
 
   exclui(id: number) {
-    this.listaEdicao.itens = this.listaEdicao.itens.filter( item => item.id !== id);
+    if (confirm('Confirma a exclusao do item?')) {
+      this.listaEdicao.itens = this.listaEdicao.itens.filter( item => item.id !== id);
+    }
+  }
+
+  changeOrdenacao(escolha : string) {
+    if (this.listaEdicao.itens) {
+      this._ordenaItens(escolha);
+    }
+  }
+  private _ordenaItens(escolha: string) {
+    if (escolha === 'ID') {
+      this._ordenaItensPorId();
+    } else {
+      this._ordenaItensPorDescricao();
+    }
+  }
+  private _ordenaItensPorDescricao() {
+    this.listaEdicao.itens.sort((item1 : ItemCompra, item2: ItemCompra)=>{
+      const descricao1 = item1.descricao;
+      const descricao2 = item2.descricao;
+  
+      if (item1 ==null || descricao1==null) {
+        return -1;
+      }
+      if (item2 ==null || descricao2==null) {
+        return 1;
+      }
+  
+      return descricao1.localeCompare(descricao2);
+    });
+  }
+
+  private _ordenaItensPorId() {
+    this.listaEdicao.itens.sort((item1 : ItemCompra, item2: ItemCompra)=>{
+      const id1 = item1.id;
+      const id2 = item2.id;
+  
+      if (item1 ==null || id1==null) {
+        return -1;
+      }
+      if (item2 ==null || id2==null) {
+        return 1;
+      }
+      
+      if (id1 < id2 ) {
+        return -1;
+      } 
+      if (id1 > id2 ) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
 

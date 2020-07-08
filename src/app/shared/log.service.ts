@@ -7,13 +7,12 @@ import * as moment from 'moment';
 })
 export class LogService {
 
-  // private log = '';
-
   private logBehavior= new BehaviorSubject<string>('');
-  constructor() { }
 
   registra(mensagem: string) {
-    const dataHora = moment(new Date()).format('HH:MM:SS');
+    moment.locale('pt-BR');
+    const data = new Date();
+    const dataHora = moment(data).format('HH:MM:SS');
     mensagem = dataHora + ' - ' + mensagem;
     // this.log = this.log + mensagem +'\n';
     this.logBehavior.next(mensagem);  

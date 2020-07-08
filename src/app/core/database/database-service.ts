@@ -3,14 +3,9 @@ import { ConnectionFactory } from './ConnectionFactory';
 import { LogService } from 'src/app/shared/log.service';
 
 export class DatabaseService{
-    /** teste de instanciacao */
-    contador = 0;
 
     constructor(private factory : ConnectionFactory,
-                private logService: LogService){
-                    ++this.contador;
-                    console.log("Criando DatabaseService "+ this.contador);
-                }
+                private logService: LogService){}
 
     private storeName : string;
 
@@ -82,6 +77,10 @@ export class DatabaseService{
         return new Observable<any[]> ( observer => {
             if (!this.storeName) {
                 observer.error(`Sem nome de store definido`);
+            }
+
+            if (!id) {
+                observer.error('Id invalidao');
             }
 
             this.factory.getConnection().subscribe( connection => {
@@ -265,7 +264,6 @@ export class DatabaseService{
             .put(objeto);
 
         request.addEventListener('success', (evt:any)=> {
-            console.log(`Alterando ${evt}`);
             observer.next(`Objeto cadastrado com sucesso.`);
         });
 

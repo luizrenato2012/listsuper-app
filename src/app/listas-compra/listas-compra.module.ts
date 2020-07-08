@@ -4,6 +4,7 @@ import { ListasCompraRountingModule } from './listas-compra-routing.module';
 import { ListaCompraMenuComponent } from './lista-compra-menu/lista-compra-menu.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MensagensModule } from '../shared/mensagens/mensagens.module';
 
 
 @NgModule({
@@ -12,9 +13,10 @@ import { FormsModule } from '@angular/forms';
         ListaCompraInclusaoComponent
     ],
     imports: [
-        ListasCompraRountingModule,
         CommonModule,
-        FormsModule
+        FormsModule,
+        ListasCompraRountingModule,
+        MensagensModule
     ],
     exports: [
         ListaCompraInclusaoComponent
