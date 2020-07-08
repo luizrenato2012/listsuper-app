@@ -19,12 +19,9 @@ export class ListaCompraInclusaoComponent implements OnInit {
   classeSelecao="table-danger";
 
   constructor(private listaService: ListaCompraService, 
-              private router: Router) { 
-                // console.log('Criando lista-compra-inclusao');
-              }
+              private router: Router) { }
 
   ngOnInit() {
-    // console.log('Iniciando lista-compra-inclusao');
     this.listaEdicao = this.listaService.getListaEdicao() || new ListaCompra();
   }
 
@@ -70,7 +67,9 @@ export class ListaCompraInclusaoComponent implements OnInit {
   }
 
   exclui(id: number) {
-    this.listaEdicao.itens = this.listaEdicao.itens.filter( item => item.id !== id);
+    if (confirm('Confirma a exclusao do item?')) {
+      this.listaEdicao.itens = this.listaEdicao.itens.filter( item => item.id !== id);
+    }
   }
 
 
