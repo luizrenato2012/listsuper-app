@@ -28,12 +28,12 @@ export class ListaCompraService {
 
   getListaEdicao() {
     let id = 0 ;
-    this._ordernaItens(this.listaEdicao.itens);
+    this._ordernaItensPorDescricao(this.listaEdicao.itens);
     this.listaEdicao.itens.forEach(item=> item.id = ++id);
     return this.listaEdicao;
   }
 
-  private _ordernaItens(itens : ItemCompra[]){
+  private _ordernaItensPorDescricao(itens : ItemCompra[]){
     if (!itens) {
       return [];
     }
@@ -57,19 +57,19 @@ export class ListaCompraService {
 
   setListaEdicao(id : number) {
     return new Observable(observer=>{
-      // console.log(`Setando lista edicao ${JSON.stringify(this.listaEdicao)}`);
       if (id==null){
         this.listaEdicao = new ListaCompra(null,null);
         observer.next();
+        return; //observer.complete() não terminou o fluxo
       }
-  
+
       const lista = this.listaDbService.carrega(id).subscribe(lista=> {
         if (lista==null) {
           observer.error('Não encontrada Lista de Compra id [' + id + ']');
         }
         this.listaEdicao = ListaCompra.build(lista);
         observer.next();
-        });
+        }, error => console.log(`Erro ao selecionar lista ${error}`));
     });
   }
    
@@ -85,6 +85,14 @@ export class ListaCompraService {
     } else {
       return this.listaDbService.altera(listaCompra);
     }
+  }
+
+  exclui(id: number) {
+    return new Observable(observer=>{
+          this.listaDbService.exclui(id).subscribe(
+            retorno=> observer.next('Finalizada exclusao'),
+            error=> observer.error(error))
+    });
   }
 
  

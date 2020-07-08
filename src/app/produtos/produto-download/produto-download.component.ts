@@ -32,12 +32,13 @@ export class ProdutoDownloadComponent implements OnInit {
   }
 
   executaDownload() {
-    this.logService.registra('Iniciando download...');
+    this.logService.registra('Apagando coleção...');
 
     this.produtoService.esvaziaStore().subscribe(()=> {
-      this.logService.registra('Esvalizada coleção');
+      this.logService.registra('Apagada coleção.')
+      this.logService.registra('Iniciando download...')
       this.produtoService.download().subscribe(()=> {
-        this.logService.registra('Finalizado download coleção');
+        this.logService.registra('Finalizado download.');
       }, error=> {
         this._trataLog(error);
       });

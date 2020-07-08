@@ -4,24 +4,26 @@
     </div>
     
     <div class="card-body">
-        <div class="botao">
-            <select class="custom-select" [(ngModel)]="strIdSelecionado">
-                <!-- <option selected [value]="-1">Escolha...</option> -->
-                <option *ngFor="let lista of listas" [value]="lista.id" >
-                    {{lista.nome}}
-                </option>
-            </select>
-        </div>
+        <form #listaForm="ngForm">
+            <app-mensagens [texto]="mensagem"></app-mensagens>
+            <div class="botao">
+                <select class="custom-select" [(ngModel)]="strIdSelecionado" name="selecionado" (change)="mensagem=''">
+                    <option *ngFor="let lista of listas" [value]="lista.id" >
+                        {{lista.nome}}
+                    </option>
+                </select>
+            </div>
 
-        <div class="botao">
-            <button  class="btn btn-primary" (click)="seleciona()" style="width: 100%; margin-right: 8px;">Seleciona</button>
-        </div>
-        <div class="botao">
-            <button class="btn btn-primary" icon="pi pi-trash" style="width: 100%; margin-right: 8px;">Exclui</button>
-        </div>
-        <div class="botao">
-            <button  class="btn btn-primary" style="margin-right: 8px; width: 100%; ">Fecha</button>
-        </div>
+            <div class="botao">
+                <button  class="btn btn-primary" (click)="seleciona()" style="width: 100%; margin-right: 8px;">Seleciona</button>
+            </div>
+            <div class="botao">
+                <button class="btn btn-primary" (click)="exclui()" [disabled]="bloqueiaExclusao()" icon="pi pi-trash" style="width: 100%; margin-right: 8px;">Exclui</button>
+            </div>
+            <div class="botao">
+                <button  class="btn btn-primary" style="margin-right: 8px; width: 100%; ">Fecha</button>
+            </div>
+        </form>
     </div>
 
     
