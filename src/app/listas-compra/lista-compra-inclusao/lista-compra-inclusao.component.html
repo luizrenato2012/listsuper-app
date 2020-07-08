@@ -30,6 +30,14 @@
             </div>
         </div>
 
+        <div id="select">
+          <select class="custom-select" name="selecionado" (change)="changeOrdenacao($event.target.value)">
+            <option *ngFor="let ordenacao of ordenacoes" [value]="ordenacao.tipo" >
+                {{ordenacao.label}}
+            </option>
+        </select>
+        </div>
+
         <div id="dados" >
             <table class="table" style="margin-top: 5x;">
                 <thead>

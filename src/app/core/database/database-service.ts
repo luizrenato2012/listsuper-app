@@ -264,7 +264,6 @@ export class DatabaseService{
             .put(objeto);
 
         request.addEventListener('success', (evt:any)=> {
-            console.log(`Alterando ${evt}`);
             observer.next(`Objeto cadastrado com sucesso.`);
         });
 

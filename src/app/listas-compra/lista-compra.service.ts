@@ -28,8 +28,10 @@ export class ListaCompraService {
 
   getListaEdicao() {
     let id = 0 ;
-    this._ordernaItensPorDescricao(this.listaEdicao.itens);
-    this.listaEdicao.itens.forEach(item=> item.id = ++id);
+    if (this.listaEdicao.itens){
+      // this._ordernaItensPorDescricao(this.listaEdicao.itens);
+       this.listaEdicao.itens.forEach(item=> item.id = ++id);
+    }
     return this.listaEdicao;
   }
 
@@ -75,7 +77,6 @@ export class ListaCompraService {
    
 
   adicionaItens(produtos : Produto[]){
-    console.log(`Adicionando itens ${produtos}` );
     produtos.forEach( produto => this.listaEdicao.itens.push(new ItemCompra(produto)) );
   }
 

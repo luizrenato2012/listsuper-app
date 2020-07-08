@@ -183,6 +183,7 @@ export class ProdutoInclusaoComponent implements OnInit {
     //console.log(`Selecionado ${valor}`);
     this.formProduto.get('descricao').setValue(valor.descricao);
     this.produtos = this.getProdutosSelecionados();
+    valor.selecionado = true;
     this.produtos.push(valor);
   }
 

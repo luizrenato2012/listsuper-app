@@ -26,8 +26,7 @@ export class ListaCompraMenuComponent implements OnInit {
   }
 
   seleciona () {
-    console.log(`selecionado 1 ${JSON.stringify(this.listas[0])}`);
-    const idSelecionado = this.listas[0].id;
+    const idSelecionado = this._getIdSelecionado();
 
     this.service.setListaEdicao(idSelecionado).subscribe(()=> this.router.navigateByUrl('/listas/nova'));
   }
@@ -46,6 +45,7 @@ export class ListaCompraMenuComponent implements OnInit {
     this.service.exclui(idSelecionado).subscribe(retorno=> {
       this.imprimeMensagem('Lista excluída com sucesso!');
       this._initListas();
+      this.strIdSelecionado = this.listas[0].id+"";
     }
     , error=>{
         console.log(error);
